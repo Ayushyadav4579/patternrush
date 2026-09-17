@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { ConfettiBurst } from "./confetti-burst"
 import { Hud } from "./hud"
 import { PatternItem, describeItem } from "./pattern-item"
+import { ComboMeter, JuiceText } from "./leaderboard-drawer"
 
 const MAX_LIVES = 3
 const CORRECT_BASE = 100
@@ -47,6 +48,8 @@ export function GameScreen({
   const [selected, setSelected] = useState<number | null>(null)
   const [wasCorrect, setWasCorrect] = useState(false)
   const [gained, setGained] = useState(0)
+  const [juice, setJuice] = useState<string | null>(null)
+  const [shake, setShake] = useState(false)
   const [timeLeft, setTimeLeft] = useState(totalTime)
 
   const timeLeftRef = useRef(totalTime)
@@ -100,11 +103,15 @@ export function GameScreen({
         setScore((s) => s + earned)
         setTrackerScore((s) => s + 1)
         setWinStreak((s) => s + 1)
+        setJuice("PERFECT!")
+        setShake(false)
         setCorrectCount((c) => c + 1)
         sound.correct()
       } else {
         setLives((l) => l - 1)
         setWinStreak(0)
+        setJuice("COMBO BREAK")
+        setShake(true)
         sound.wrong()
       }
 
@@ -139,6 +146,25 @@ export function GameScreen({
 
   // Question timer.
   useEffect(() => {
+    if (phase !== "question" || timeLeft > 5000) return
+    sound.heartbeat()
+    const pulse = setInterval(() => sound.heartbeat(), 700)
+    return () => clearInterval(pulse)
+  }, [phase, timeLeft])
+
+  useEffect(() => {
+    if (!shake) return
+    const t = setTimeout(() => setShake(false), 450)
+    return () => clearTimeout(t)
+  }, [shake])
+
+  useEffect(() => {
+    if (!juice) return
+    const t = setTimeout(() => setJuice(null), 850)
+    return () => clearTimeout(t)
+  }, [juice])
+
+  useEffect(() => {
     if (phase !== "question") return
     const start = Date.now()
     const iv = setInterval(() => {
@@ -159,7 +185,7 @@ export function GameScreen({
   const timeColor = timePct > 50 ? "bg-success" : timePct > 25 ? "bg-warning" : "bg-destructive"
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] w-full max-w-lg flex-col px-4 pb-6 pt-5">
+    <div className={cn("mx-auto flex min-h-[100dvh] w-full max-w-lg flex-col px-4 pb-6 pt-5", shake && "animate-screen-shake", timeLeft <= 5000 && phase === "question" && "near-miss-pulse")}>
       <Hud
         score={score}
         lives={lives}
@@ -169,8 +195,10 @@ export function GameScreen({
         trackerScore={trackerScore}
         winStreak={winStreak}
       />
+      <div className="mt-3 flex justify-center"><ComboMeter streak={winStreak} /></div>
 
       <div className="relative flex flex-1 flex-col items-center justify-center gap-6 py-4">
+        {juice && <JuiceText text={juice} tone={wasCorrect ? "success" : "danger"} />}
         {phase === "countdown" ? (
           <div key={count} className="flex flex-col items-center gap-2">
             <span className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">

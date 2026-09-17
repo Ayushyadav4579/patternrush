@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { HelpCircle, Play, Trophy, Volume2, VolumeX } from "lucide-react"
+import { CampaignMap, LeaderboardButton, LeaderboardDrawer, QuestPanel, ShopCard } from "./leaderboard-drawer"
 import { Button } from "@/components/ui/button"
 import { DIFFICULTY_META, type Difficulty, type GameMode } from "@/lib/patterns"
 import { cn } from "@/lib/utils"
@@ -29,18 +30,22 @@ export function HomeScreen({
   onToggleSound: () => void
 }) {
   const [showHelp, setShowHelp] = useState(false)
+  const [showLeaderboard, setShowLeaderboard] = useState(false)
 
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-8 px-5 py-10">
-      <button
-        onClick={onToggleSound}
-        aria-label={soundOn ? "Mute sound" : "Unmute sound"}
-        className="absolute right-4 top-4 grid size-11 place-items-center rounded-full bg-card text-muted-foreground shadow-md transition-colors hover:text-foreground"
-      >
-        {soundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
-      </button>
+    <div className="relative flex min-h-[100dvh] flex-col items-center gap-6 px-5 py-8 sm:py-10">
+      <div className="absolute right-4 top-4 flex items-center gap-2">
+        <LeaderboardButton onClick={() => setShowLeaderboard(true)} />
+        <button
+          onClick={onToggleSound}
+          aria-label={soundOn ? "Mute sound" : "Unmute sound"}
+          className="grid size-11 place-items-center rounded-2xl bg-card text-muted-foreground shadow-md transition-colors hover:text-foreground"
+        >
+          {soundOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
+        </button>
+      </div>
 
-      <div className="flex flex-col items-center gap-3 text-center animate-pop-in">
+      <div className="flex flex-col items-center gap-3 pt-10 text-center animate-pop-in">
         <div className="flex items-center gap-1.5 rounded-full bg-primary/15 px-4 py-1.5 text-sm font-semibold text-primary">
           <Trophy size={16} />
           <span>Best Score: {bestScore}</span>
@@ -120,6 +125,12 @@ export function HomeScreen({
           <HelpCircle size={20} />
           How to Play
         </Button>
+      </div>
+
+      <div className="grid w-full max-w-xl gap-3 md:grid-cols-2">
+        <QuestPanel />
+        <ShopCard />
+        {mode === "campaign" && <div className="md:col-span-2"><CampaignMap /></div>}
       </div>
 
       <section className="mt-2 w-full max-w-xl border-t border-border/60 pt-5 text-center" aria-labelledby="about-patternrush">

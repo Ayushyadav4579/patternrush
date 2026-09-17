@@ -47,6 +47,11 @@ export const sound = {
     if (!this.enabled) return
     tone(440, 0, 0.05, "triangle", 0.06)
   },
+  heartbeat() {
+    if (!this.enabled) return
+    tone(110, 0, 0.08, "sine", 0.08)
+    tone(95, 0.12, 0.1, "sine", 0.07)
+  },
   gameOver() {
     if (!this.enabled) return
     tone(523.25, 0, 0.18, "sine", 0.16)

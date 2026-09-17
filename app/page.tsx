@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { GameOverScreen } from "@/components/game/game-over-screen"
 import { GameScreen, type GameResult } from "@/components/game/game-screen"
 import { HomeScreen } from "@/components/game/home-screen"
+import { AmbientOrbs } from "@/components/game/leaderboard-drawer"
 import type { Difficulty, GameMode } from "@/lib/patterns"
 import { sound } from "@/lib/sound"
 import { getBestScore, getOverallBest, saveBestScore } from "@/lib/storage"
@@ -80,7 +81,9 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <main className="min-h-[100dvh] bg-background text-foreground">
+      <main className="relative min-h-[100dvh] overflow-hidden bg-background text-foreground">
+      <AmbientOrbs />
+      <div className="relative z-10">
       {screen === "home" && (
         <HomeScreen
           bestScore={overallBest}
@@ -107,6 +110,7 @@ export default function Page() {
           onHome={() => setScreen("home")}
         />
       )}
+      </div>
       </main>
     </>
   )
