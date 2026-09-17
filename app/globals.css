@@ -54,28 +54,28 @@
 :root {
   color-scheme: dark;
   /* Deep violet arcade backdrop with a vibrant purple primary and cyan accent. */
-  --background: oklch(0.24 0.06 285);
-  --foreground: oklch(0.97 0.01 285);
-  --card: oklch(0.31 0.06 287);
-  --card-foreground: oklch(0.97 0.01 285);
-  --popover: oklch(0.31 0.06 287);
-  --popover-foreground: oklch(0.97 0.01 285);
-  --primary: oklch(0.66 0.22 305);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.38 0.055 287);
-  --secondary-foreground: oklch(0.97 0.01 285);
-  --muted: oklch(0.37 0.05 287);
-  --muted-foreground: oklch(0.74 0.03 287);
-  --accent: oklch(0.78 0.13 200);
-  --accent-foreground: oklch(0.22 0.06 285);
-  --destructive: oklch(0.62 0.23 25);
-  --success: oklch(0.72 0.18 150);
-  --success-foreground: oklch(0.2 0.05 150);
-  --warning: oklch(0.82 0.16 85);
+  --background: oklch(0.18 0.045 255);
+  --foreground: oklch(0.97 0.01 220);
+  --card: oklch(0.25 0.045 255);
+  --card-foreground: oklch(0.97 0.01 220);
+  --popover: oklch(0.25 0.045 255);
+  --popover-foreground: oklch(0.97 0.01 220);
+  --primary: oklch(0.72 0.18 178);
+  --primary-foreground: oklch(0.16 0.04 235);
+  --secondary: oklch(0.30 0.045 255);
+  --secondary-foreground: oklch(0.97 0.01 220);
+  --muted: oklch(0.30 0.045 255);
+  --muted-foreground: oklch(0.78 0.035 220);
+  --accent: oklch(0.80 0.14 195);
+  --accent-foreground: oklch(0.16 0.04 235);
+  --destructive: oklch(0.65 0.22 25);
+  --success: oklch(0.78 0.19 145);
+  --success-foreground: oklch(0.18 0.04 145);
+  --warning: oklch(0.84 0.17 85);
   --warning-foreground: oklch(0.28 0.06 85);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.66 0.22 305);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 17%);
+  --ring: oklch(0.72 0.18 178);
   --chart-1: oklch(0.66 0.22 305);
   --chart-2: oklch(0.78 0.13 200);
   --chart-3: oklch(0.72 0.18 150);
@@ -286,6 +286,8 @@
 .ambient-orb-one { left: -8rem; top: 10%; background: var(--primary); }
 .ambient-orb-two { right: -8rem; bottom: 8%; background: var(--accent); animation-delay: -4s; }
 .ambient-grid { position: absolute; inset: 0; opacity: .035; background-image: linear-gradient(color-mix(in oklab, var(--foreground) 45%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--foreground) 45%, transparent) 1px, transparent 1px); background-size: 32px 32px; mask-image: radial-gradient(ellipse at center, black, transparent 75%); }
+@keyframes hero-pulse { 0%, 100% { opacity: .16; transform: scale(1); } 50% { opacity: .28; transform: scale(1.14); } }
+.hero-glow { animation: hero-pulse 6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-pop-in,
