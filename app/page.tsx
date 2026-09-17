@@ -65,8 +65,22 @@ export default function Page() {
     })
   }
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoGame',
+    name: 'PatternRush',
+    alternateName: 'PatternRush Neon Sequence Challenge',
+    description: 'A free online pattern recognition and sequence puzzle game.',
+    genre: ['Puzzle', 'Brain Training'],
+    gamePlatform: ['Web Browser', 'Mobile Web'],
+    applicationCategory: 'Game',
+    isAccessibleForFree: true,
+  }
+
   return (
-    <main className="min-h-[100dvh] bg-background text-foreground">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <main className="min-h-[100dvh] bg-background text-foreground">
       {screen === "home" && (
         <HomeScreen
           bestScore={overallBest}
@@ -93,6 +107,7 @@ export default function Page() {
           onHome={() => setScreen("home")}
         />
       )}
-    </main>
+      </main>
+    </>
   )
 }

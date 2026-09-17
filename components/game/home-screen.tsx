@@ -48,7 +48,7 @@ export function HomeScreen({
         <h1 className="font-display text-6xl font-bold leading-none tracking-tight text-foreground text-balance sm:text-7xl">
           Pattern
           <br />
-          <span className="text-primary">Master</span>
+          <span className="text-primary">Rush</span>
         </h1>
         <p className="max-w-xs text-pretty text-base leading-relaxed text-muted-foreground">
           Spot the pattern. Pick what comes next. Race the clock and keep your streak alive.
@@ -121,6 +121,13 @@ export function HomeScreen({
           How to Play
         </Button>
       </div>
+
+      <section className="mt-2 w-full max-w-xl border-t border-border/60 pt-5 text-center" aria-labelledby="about-patternrush">
+        <h2 id="about-patternrush" className="font-display text-sm font-bold text-foreground">PatternRush: a free pattern recognition game</h2>
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+          Train your brain by finding what comes next in fast number, color, shape, symbol, and letter sequences. Try Classic, Time Attack, Endless, or Campaign mode on any device.
+        </p>
+      </section>
 
       {showHelp && <HowToPlay onClose={() => setShowHelp(false)} />}
     </div>

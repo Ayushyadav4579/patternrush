@@ -16,10 +16,33 @@ const nunito = Nunito({
 })
 
 export const metadata: Metadata = {
-  title: 'Pattern Master — Spot the Pattern',
+  title: 'PatternRush — Neon Sequence Challenge',
   description:
-    'A fast, addictive pattern puzzle game. Find what comes next in sequences of numbers, colors, shapes and symbols across easy, medium and hard difficulty. Plays offline, no login required.',
-  generator: 'v0.app',
+    'PatternRush is a free online pattern puzzle game with number, color, shape, letter, campaign, endless, and time attack challenges. Play instantly with no login required.',
+  keywords: [
+    'PatternRush',
+    'pattern puzzle game',
+    'sequence game online',
+    'brain training game',
+    'number pattern game',
+    'pattern recognition game',
+    'free puzzle game',
+  ],
+  applicationName: 'PatternRush',
+  category: 'games',
+  creator: 'PatternRush',
+  publisher: 'PatternRush',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  generator: 'PatternRush',
 }
 
 export const viewport: Viewport = {
