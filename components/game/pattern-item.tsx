@@ -36,6 +36,7 @@ export function describeItem(item: Item): string {
   if (item.kind === "number") return `Number ${item.value}`
   if (item.kind === "color") return `${COLORS[item.value].name} circle`
   if (item.kind === "shape") return `${SHAPES[item.value]} shape`
+  if (item.kind === "letter") return `Letter ${String.fromCharCode(65 + item.value)}`
   return `Arrow pointing ${SYMBOLS[item.value]}`
 }
 
@@ -65,6 +66,10 @@ export function PatternItem({ item, size = "md" }: { item: Item; size?: "sm" | "
   if (item.kind === "shape") {
     const Icon = SHAPE_ICONS[SHAPES[item.value]]
     return <Icon size={iconSize} className="text-accent" strokeWidth={2.25} fill="currentColor" fillOpacity={0.25} />
+  }
+
+  if (item.kind === "letter") {
+    return <span className={cn("font-display font-bold uppercase text-accent", textClass)}>{String.fromCharCode(65 + item.value)}</span>
   }
 
   const Icon = SYMBOL_ICONS[SYMBOLS[item.value]]

@@ -17,6 +17,7 @@ export interface Question {
   id: string
   kind: ItemKind
   category: string
+  prompt: string
   sequence: Item[]
   options: Item[]
   correctIndex: number
@@ -93,6 +94,7 @@ function indexDistractors(size: number, correct: number, count: number): number[
 interface Raw {
   kind: ItemKind
   category: string
+  prompt?: string
   sequence: Item[]
   correct: Item
   distractors: Item[]
@@ -253,6 +255,8 @@ const GENERATORS: GenDef[] = [
   { tiers: [2, 3], fn: (t, r) => genInterleave(t, r) },
   { tiers: [3], fn: () => genFibonacci() },
   { tiers: [3], fn: (_t, r) => genQuadratic(r) },
+  { tiers: [1, 2, 3], fn: (t) => genLetters(t) },
+  { tiers: [2, 3], fn: (t) => genOddOneOut(t) },
 ]
 
 function signature(raw: Raw): string {
@@ -266,6 +270,7 @@ function toQuestion(raw: Raw, index: number): Question {
     id: `q${index}-${Math.random().toString(36).slice(2, 8)}`,
     kind: raw.kind,
     category: raw.category,
+    prompt: raw.prompt ?? "Find the rule and choose the best answer.",
     sequence: raw.sequence,
     options,
     correctIndex,
@@ -305,11 +310,19 @@ export function generateGame(difficulty: Difficulty, rounds = 10): Question[] {
 
 function genLetters(tier: number): Raw {
   const jumps = tier === 1 ? [1, 2] : tier === 2 ? [2, 3, 4] : [2, 3, 5]
-  const start = randInt(0, 5)
+  const start = randInt(0, tier === 3 ? 4 : 8)
   const jump = choice(jumps)
   const seq = Array.from({ length: 4 }, (_, i) => ({ kind: "letter" as const, value: start + jump * i }))
   const correct = start + jump * 4
-  return { kind: "letter", category: "Letters", sequence: seq, correct: { kind: "letter", value: correct }, distractors: indexDistractors(26, correct, 3).map((value) => ({ kind: "letter" as const, value })) }
+  return { kind: "letter", category: tier === 3 ? "Alphabet Logic" : "Letter Steps", prompt: "Track the skip between letters.", sequence: seq, correct: { kind: "letter", value: correct }, distractors: indexDistractors(26, correct, 3).map((value) => ({ kind: "letter" as const, value })) }
+}
+
+function genOddOneOut(tier: number): Raw {
+  const step = tier === 3 ? randInt(3, 7) : randInt(2, 4)
+  const start = randInt(2, 12)
+  const seq = Array.from({ length: 4 }, (_, i) => num(start + step * i))
+  const correct = start + step * 4
+  return { kind: "number", category: "Rule Check", prompt: "Continue the rule. Ignore the tempting near-misses.", sequence: seq, correct: num(correct), distractors: [num(correct - step), num(correct + 1), num(correct + step + 1)] }
 }
 
 function genPrimes(): Raw {

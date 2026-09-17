@@ -213,7 +213,8 @@ export function GameScreen({
               <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {question.category}
               </span>
-              <h2 className="font-display text-xl font-semibold text-foreground">What comes next?</h2>
+              <h2 className="font-display text-xl font-semibold text-foreground">{question.prompt}</h2>
+              <p className="max-w-xs text-center text-sm text-muted-foreground">Use the rule, not a guess.</p>
             </div>
 
             {/* Sequence */}
