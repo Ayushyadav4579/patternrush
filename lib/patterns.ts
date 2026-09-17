@@ -1,7 +1,7 @@
 // Pattern Master — local, offline pattern generator.
 // Every question has exactly ONE logically correct answer.
 
-export type ItemKind = "number" | "color" | "shape" | "symbol"
+export type ItemKind = "number" | "color" | "shape" | "symbol" | "letter"
 
 export interface Item {
   kind: ItemKind
@@ -9,6 +9,7 @@ export interface Item {
   // color  -> index into COLORS
   // shape  -> index into SHAPES
   // symbol -> index into SYMBOLS (arrow rotation, 0=up,1=right,2=down,3=left)
+  // letter -> char code offset (A=0, B=1, ...)
   value: number
 }
 
