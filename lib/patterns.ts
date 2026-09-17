@@ -23,6 +23,7 @@ export interface Question {
 }
 
 export type Difficulty = "easy" | "medium" | "hard"
+export type GameMode = "classic" | "time-attack" | "endless" | "campaign"
 
 // ----- Visual palettes (gameplay content, not UI theme) -----
 export const COLORS = [
@@ -300,6 +301,28 @@ export function generateGame(difficulty: Difficulty, rounds = 10): Question[] {
   }
 
   return questions
+}
+
+function genLetters(tier: number): Raw {
+  const jumps = tier === 1 ? [1, 2] : tier === 2 ? [2, 3, 4] : [2, 3, 5]
+  const start = randInt(0, 5)
+  const jump = choice(jumps)
+  const seq = Array.from({ length: 4 }, (_, i) => ({ kind: "letter" as const, value: start + jump * i }))
+  const correct = start + jump * 4
+  return { kind: "letter", category: "Letters", sequence: seq, correct: { kind: "letter", value: correct }, distractors: indexDistractors(26, correct, 3).map((value) => ({ kind: "letter" as const, value })) }
+}
+
+function genPrimes(): Raw {
+  const primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+  const start = randInt(0, 5)
+  const seq = primes.slice(start, start + 4).map(num)
+  const correct = primes[start + 4]
+  return { kind: "number", category: "Prime Numbers", sequence: seq, correct: num(correct), distractors: numberDistractors(correct, 2, 3, seq.map((s) => s.value)).map(num) }
+}
+
+export function generateCampaignLevel(level: number): Question[] {
+  const difficulty: Difficulty = level < 17 ? "easy" : level < 34 ? "medium" : "hard"
+  return generateGame(difficulty, 1)
 }
 
 export const DIFFICULTY_META: Record<Difficulty, { label: string; emoji: string; time: number; blurb: string }> = {

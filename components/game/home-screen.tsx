@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { HelpCircle, Play, Trophy, Volume2, VolumeX } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DIFFICULTY_META, type Difficulty } from "@/lib/patterns"
+import { DIFFICULTY_META, type Difficulty, type GameMode } from "@/lib/patterns"
 import { cn } from "@/lib/utils"
 import { HowToPlay } from "./how-to-play"
 
@@ -13,6 +13,8 @@ export function HomeScreen({
   bestScore,
   difficulty,
   onDifficultyChange,
+  mode,
+  onModeChange,
   onPlay,
   soundOn,
   onToggleSound,
@@ -20,6 +22,8 @@ export function HomeScreen({
   bestScore: number
   difficulty: Difficulty
   onDifficultyChange: (d: Difficulty) => void
+  mode: GameMode
+  onModeChange: (mode: GameMode) => void
   onPlay: () => void
   soundOn: boolean
   onToggleSound: () => void
@@ -49,6 +53,26 @@ export function HomeScreen({
         <p className="max-w-xs text-pretty text-base leading-relaxed text-muted-foreground">
           Spot the pattern. Pick what comes next. Race the clock and keep your streak alive.
         </p>
+      </div>
+
+      <div className="w-full max-w-sm">
+        <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Game mode
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          {([
+            ["classic", "Classic", "10 rounds"],
+            ["time-attack", "Time Attack", "60 seconds"],
+            ["endless", "Endless", "3 hearts"],
+            ["campaign", "Campaign", "Levels 1–50"],
+          ] as const).map(([value, label, detail]) => (
+            <button key={value} onClick={() => onModeChange(value)} aria-pressed={mode === value}
+              className={cn("rounded-2xl border-2 px-3 py-2 text-left transition-all", mode === value ? "border-primary bg-primary/15 shadow-lg" : "border-transparent bg-card hover:bg-secondary")}>
+              <span className="block font-display text-sm font-bold text-foreground">{label}</span>
+              <span className="text-[11px] text-muted-foreground">{detail}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="w-full max-w-sm">

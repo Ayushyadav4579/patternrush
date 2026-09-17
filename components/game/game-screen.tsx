@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Check, X } from "lucide-react"
-import { DIFFICULTY_META, generateGame, type Difficulty } from "@/lib/patterns"
+import { DIFFICULTY_META, generateGame, type Difficulty, type GameMode } from "@/lib/patterns"
 import { sound } from "@/lib/sound"
 import { cn } from "@/lib/utils"
 import { ConfettiBurst } from "./confetti-burst"
@@ -24,14 +24,17 @@ type Phase = "countdown" | "question" | "feedback"
 
 export function GameScreen({
   difficulty,
+  mode = "classic",
   onFinish,
 }: {
   difficulty: Difficulty
+  mode?: GameMode
   onFinish: (result: GameResult) => void
 }) {
-  const questions = useMemo(() => generateGame(difficulty), [difficulty])
-  const totalRounds = questions.length
-  const totalTime = DIFFICULTY_META[difficulty].time * 1000
+  const questions = useMemo(() => generateGame(difficulty, mode === "time-attack" || mode === "endless" ? 50 : 10), [difficulty, mode])
+  const totalRounds = mode === "classic" || mode === "campaign" ? 10 : questions.length
+  const totalTime = mode === "time-attack" ? 60000 : DIFFICULTY_META[difficulty].time * 1000
+  const maxLives = mode === "endless" ? 3 : MAX_LIVES
 
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)

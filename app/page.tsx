@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { GameOverScreen } from "@/components/game/game-over-screen"
 import { GameScreen, type GameResult } from "@/components/game/game-screen"
 import { HomeScreen } from "@/components/game/home-screen"
-import type { Difficulty } from "@/lib/patterns"
+import type { Difficulty, GameMode } from "@/lib/patterns"
 import { sound } from "@/lib/sound"
 import { getBestScore, getOverallBest, saveBestScore } from "@/lib/storage"
 
@@ -13,6 +13,7 @@ type Screen = "home" | "playing" | "over"
 export default function Page() {
   const [screen, setScreen] = useState<Screen>("home")
   const [difficulty, setDifficulty] = useState<Difficulty>("easy")
+  const [mode, setMode] = useState<GameMode>("classic")
   const [gameKey, setGameKey] = useState(0)
   const [result, setResult] = useState<GameResult | null>(null)
   const [isNewBest, setIsNewBest] = useState(false)
@@ -71,6 +72,8 @@ export default function Page() {
           bestScore={overallBest}
           difficulty={difficulty}
           onDifficultyChange={setDifficulty}
+          mode={mode}
+          onModeChange={setMode}
           onPlay={startGame}
           soundOn={soundOn}
           onToggleSound={toggleSound}
@@ -78,7 +81,7 @@ export default function Page() {
       )}
 
       {screen === "playing" && (
-        <GameScreen key={gameKey} difficulty={difficulty} onFinish={handleFinish} />
+        <GameScreen key={gameKey} difficulty={difficulty} mode={mode} onFinish={handleFinish} />
       )}
 
       {screen === "over" && result && (
